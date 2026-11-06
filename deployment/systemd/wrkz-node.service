@@ -1,0 +1,16 @@
+[Unit]
+Description=WrkzCoin node (qwertycoind)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wrkzpool
+ExecStart=/opt/wrkz/bin/Wrkzd --data-dir /opt/wrkz/data --non-interactive --rpc-bind-ip 127.0.0.1 --rpc-bind-port 17856 --p2p-bind-port 11897 --no-zmq --log-level 1 --max-log-file-size 0
+Restart=on-failure
+RestartSec=15
+LimitNOFILE=65536
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

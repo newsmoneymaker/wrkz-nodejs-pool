@@ -1,0 +1,17 @@
+[Unit]
+Description=WrkzCoin pool: charts data collector (hash rate, difficulty, miners, workers on the home page)
+After=wrkz-pool-redis.service wrkz-pool-api.service
+Requires=wrkz-pool-redis.service
+[Service]
+Type=simple
+User=wrkzpool
+WorkingDirectory=/opt/wrkz-nodejs-pool
+ExecStart=/usr/bin/node /opt/wrkz-nodejs-pool/init.js -module=chartsDataCollector
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

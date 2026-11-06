@@ -1,0 +1,105 @@
+<!-- FAQ (Kryptokrona). Two language blocks; the one matching the site language is shown. -->
+
+<div class="faq" data-faq="en">
+    <h3>Frequently Asked Questions (FAQ)</h3>
+
+    <h4 class="push-up-20">Why can't my miner connect / why does my normal XMRig not work?</h4>
+    <div class="card padding-15 push-down-10">
+        The wire protocol itself is the same plain cryptonote-nodejs-pool Stratum other CryptoNote coins use
+        (a <code>login</code> request, <code>job</code> with a blob+target, <code>submit</code> with a nonce+result)
+        -- but <code>cn_turtle_lite_slow_hash_v2</code>, the actual hash this coin uses, is NOT bundled in a stock
+        XMRig, and is also a genuinely different algorithm from this fork's own <code>cn-pico</code> despite a
+        similar name. Only <strong>poolpayminer 1.1.32+</strong> has it; a stock XMRig or a generic
+        miner that only knows <code>cn-pico</code> cannot mine here correctly.
+    </div>
+
+    <h4 class="push-up-20">What do I use as my wallet address?</h4>
+    <div class="card padding-15 push-down-10">
+        Your Kryptokrona address (base58, starts with <code>SEKRe</code>, 99 characters).
+    </div>
+
+    <h4 class="push-up-20">Which algorithm do I mine?</h4>
+    <div class="card padding-15 push-down-10">
+        <strong>cn_turtle_lite_slow_hash_v2</strong> on the CPU (needs AES-NI, 256 KB scratchpad per thread). Use poolpayminer, which supports
+        <code>kryptokrona</code> out of the box.
+    </div>
+
+    <h4 class="push-up-20">Can I change my difficulty?</h4>
+    <div class="card padding-15 push-down-10">
+        Yes. This pool uses variable difficulty (vardiff) that automatically adjusts to your hashrate.
+    </div>
+
+    <h4 class="push-up-20">How are rewards split?</h4>
+    <div class="card padding-15 push-down-10">
+        Proportionally (PROP) to your shares in the round by default, or solo if you prefix your address with
+        <code>solo:</code>.
+    </div>
+
+    <h4 class="push-up-20">When do I get paid?</h4>
+    <div class="card padding-15 push-down-10">
+        Your balance is credited correctly once a block matures (70 confirmations). However, <strong>actual
+        payouts are currently dry-run only</strong> until the first real block matures and a real payout is
+        verified end to end. This is a known, honestly-flagged gap at launch, not a bug.
+    </div>
+
+    <h4 class="push-up-20">Is there a block explorer?</h4>
+    <div class="card padding-15 push-down-10">
+        Yes: <a href="https://explorer.kryptokrona.org/" target="_blank" rel="noopener">explorer.kryptokrona.org</a>.
+    </div>
+</div>
+
+<div class="faq" data-faq="ru">
+    <h3>Часто задаваемые вопросы (FAQ)</h3>
+
+    <h4 class="push-up-20">Почему майнер не подключается / почему обычный XMRig не работает?</h4>
+    <div class="card padding-15 push-down-10">
+        Сам протокол — это обычный Stratum cryptonote-nodejs-pool, как у других CryptoNote-монет (запрос
+        <code>login</code>, задание <code>job</code> с blob+target, отправка <code>submit</code> с nonce+result)
+        — но сам алгоритм <code>cn_turtle_lite_slow_hash_v2</code> не встроен в обычный XMRig, и это
+        действительно другой алгоритм, чем уже есть в этом форке как <code>cn-pico</code>, несмотря на похожее
+        название. Его понимает только <strong>poolpayminer 1.1.32+</strong>; обычный XMRig или майнер, знающий
+        только <code>cn-pico</code>, здесь корректно майнить не сможет.
+    </div>
+
+    <h4 class="push-up-20">Какой адрес кошелька указывать?</h4>
+    <div class="card padding-15 push-down-10">
+        Ваш адрес Kryptokrona (base58, начинается на <code>SEKRe</code>, 99 символов).
+    </div>
+
+    <h4 class="push-up-20">Какой алгоритм майнить?</h4>
+    <div class="card padding-15 push-down-10">
+        <strong>cn_turtle_lite_slow_hash_v2</strong> на процессоре (нужен AES-NI, 256 КБ scratchpad на поток). Используйте poolpayminer -- он
+        поддерживает <code>kryptokrona</code> "из коробки".
+    </div>
+
+    <h4 class="push-up-20">Можно ли изменить сложность?</h4>
+    <div class="card padding-15 push-down-10">
+        Да. Этот пул использует переменную сложность (vardiff), которая автоматически подстраивается под ваш
+        хешрейт.
+    </div>
+
+    <h4 class="push-up-20">Как делятся награды?</h4>
+    <div class="card padding-15 push-down-10">
+        Пропорционально (PROP) вашим шарам в раунде по умолчанию, либо соло, если добавить <code>solo:</code>
+        перед адресом.
+    </div>
+
+    <h4 class="push-up-20">Когда придут выплаты?</h4>
+    <div class="card padding-15 push-down-10">
+        Баланс начисляется правильно после созревания блока (70 подтверждений). Однако <strong>реальные выплаты
+        сейчас только в тестовом режиме (dry-run)</strong> до тех пор, пока не созреет первый настоящий блок и не
+        будет проверена целиком настоящая выплата. Это известный, честно обозначенный пробел на старте, а не
+        ошибка.
+    </div>
+
+    <h4 class="push-up-20">Есть ли обозреватель блоков?</h4>
+    <div class="card padding-15 push-down-10">
+        Да: <a href="https://explorer.kryptokrona.org/" target="_blank" rel="noopener">explorer.kryptokrona.org</a>.
+    </div>
+</div>
+
+<script>
+var faqLang = (typeof langCode !== 'undefined' && langCode === 'ru') ? 'ru' : 'en';
+$('.faq').hide().filter('[data-faq="' + faqLang + '"]').show();
+currentPage = { destroy: function () {}, update: function () {} };
+</script>

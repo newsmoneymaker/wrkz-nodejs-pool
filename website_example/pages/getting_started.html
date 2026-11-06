@@ -1,0 +1,172 @@
+<!-- Getting started (Kryptokrona). Two language blocks; the one matching the site language is shown. -->
+
+<div class="gs" data-gs="en">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card padding-l-10 padding-r-10" style="border-left:4px solid #1a5fd0;">
+                <div class="stats">
+                    <div><i class="fa fa-bolt"></i> <strong>Tip:</strong> it's usually more convenient to mine through <a href="https://all.pool-pay.com/#sec-account">all.pool-pay.com</a> instead of this one coin directly. Register there once, get a personal port, and the miner automatically switches to whichever pool-pay.com coin is most profitable right now &mdash; you can also get paid in USDT instead of the mined coin.</div>
+                    <div><i class="fa fa-terminal"></i> Example: <code>poolpayminer --auto YOUR_PERSONAL_PORT</code> &mdash; one simple port, nothing else to configure.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row push-up-15">
+        <div class="col-sm-6">
+            <h3>Connection details</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-cloud"></i> Pool address: <span class="gsHost"></span>:5300 (plain TCP) or :5301 (TLS)</div>
+                    <div><i class="fa fa-cubes"></i> Algorithm: <strong>cn_turtle_lite_slow_hash_v2</strong> (<code>kryptokrona</code> in poolpayminer, also known as <code>xkr</code>/<code>cn-turtle-lite/2</code>), CPU. Needs a CPU with AES-NI (any x86-64 CPU from roughly 2013 onward), 256 KB scratchpad per thread.</div>
+                    <div><i class="fa fa-lock"></i> Variable difficulty (vardiff), adjusts automatically to your hashrate.</div>
+                    <div><i class="fa fa-shield"></i> TLS available on ports 5301-5303.</div>
+                </div>
+            </div>
+
+            <h4 class="push-up-15">Username</h4>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-key"></i> Your <strong>Kryptokrona address</strong> (base58, starts with <code>SEKRe</code>, 99 characters), optionally with a worker name: <code>ADDRESS+rig1</code> (or <code>ADDRESS.rig1</code>). Add <code>solo:</code> in front of the address for solo mining instead of the default shared (PROP) pool.</div>
+                </div>
+            </div>
+
+            <h4 class="push-up-15">Password</h4>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-key"></i> Anything, for example <code>x</code></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <h3>Mining command</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <p>With poolpayminer (1.1.32+):</p>
+                <pre style="white-space:pre-wrap;word-break:break-all;">poolpayminer -a kryptokrona -o xkrona.pool-pay.com:5300 -u YOUR_XKR_ADDRESS+rig1 -p x</pre>
+                <p>With TLS: <code>poolpayminer -a kryptokrona --tls -o xkrona.pool-pay.com:5301 -u YOUR_XKR_ADDRESS+rig1 -p x</code></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row push-up-15">
+        <div class="col-sm-12">
+            <h3 class="push-up-15">About the algorithm (cn_turtle_lite_slow_hash_v2)</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <p><strong>cn_turtle_lite_slow_hash_v2</strong> is Kryptokrona's own real CryptoNight-family hash (variant 2 math, i.e. the same division/sqrt mixing step Monero's own CryptoNight v2 added, but over a much smaller 256 KB scratchpad instead of 2 MB), computed over the pool's own block-hashing blob (header fields, merkle root, transaction count -- the same general shape every CryptoNote-nodejs-pool coin uses). It is genuinely NOT the same algorithm as <code>cn-pico</code>/<code>cryptonight-turtle</code> already built into this fork, despite very similar names and matching memory/iteration parameters on paper -- confirmed by hashing the same input both ways against the real node's own code and getting different results. The wire protocol itself is the plain cryptonote-nodejs-pool Stratum (a <code>login</code> request, <code>job</code> with blob+target, <code>submit</code> with nonce+result), not classic Bitcoin Stratum either. A stock XMRig does not know this exact algorithm: use <strong>poolpayminer</strong>, which supports it out of the box.</p>
+            </div>
+
+            <h3 class="push-up-15">Software</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <ul>
+                    <li><strong>poolpayminer (Linux x86-64):</strong> <a href="/downloads/">downloads</a>,
+                        <a href="https://github.com/newsmoneymaker/poolpayminer" target="_blank" rel="noopener">source code</a>. A modified XMRig with cn_turtle_lite_slow_hash_v2 support. <strong>Fee 1%</strong>, shown at start-up.</li>
+                    <li><strong>Pool software source:</strong> <a href="https://github.com/newsmoneymaker/kryptokrona-nodejs-pool" target="_blank" rel="noopener">kryptokrona-nodejs-pool</a>.</li>
+                    <li><strong>Wallet</strong> (to get your address): the official <a href="https://kryptokrona.org/" target="_blank" rel="noopener">Kryptokrona</a> wallet/node.</li>
+                </ul>
+            </div>
+
+            <h3 class="push-up-15">Rewards and payments</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <ul>
+                    <li>Reward scheme: <strong>PROP</strong> (proportional, default) or <strong>solo</strong> (prefix your address with <code>solo:</code>).</li>
+                    <li>Block reward follows Kryptokrona's standard CryptoNote emission curve -- see the current value on the Dashboard page.</li>
+                    <li>Blocks are credited to your balance after 70 confirmations (Kryptokrona's real coinbase maturity is 20 blocks; the pool waits longer to be safe).</li>
+                    <li><strong>Payments are currently dry-run only.</strong> This will be enabled once a real block matures and the first payout is verified end to end -- it is not a bug, it is an honestly incomplete step at launch.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="gs" data-gs="ru">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card padding-l-10 padding-r-10" style="border-left:4px solid #1a5fd0;">
+                <div class="stats">
+                    <div><i class="fa fa-bolt"></i> <strong>Совет:</strong> обычно удобнее майнить через <a href="https://all.pool-pay.com/#sec-account">all.pool-pay.com</a>, а не напрямую эту монету. Зарегистрируйтесь там один раз, получите личный порт, и майнер сам переключается на самую выгодную монету pool-pay.com прямо сейчас &mdash; выплаты можно получать в USDT вместо намайненной монеты.</div>
+                    <div><i class="fa fa-terminal"></i> Пример: <code>poolpayminer --auto ВАШ_ЛИЧНЫЙ_ПОРТ</code> &mdash; один простой порт, больше ничего настраивать не нужно.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row push-up-15">
+        <div class="col-sm-6">
+            <h3>Параметры подключения</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-cloud"></i> Адрес пула: <span class="gsHost"></span>:5300 (обычный TCP) или :5301 (TLS)</div>
+                    <div><i class="fa fa-cubes"></i> Алгоритм: <strong>cn_turtle_lite_slow_hash_v2</strong> (<code>kryptokrona</code> в poolpayminer, также <code>xkr</code>/<code>cn-turtle-lite/2</code>), процессор. Нужен CPU с AES-NI (почти любой x86-64 примерно с 2013 года), 256 КБ scratchpad на поток.</div>
+                    <div><i class="fa fa-lock"></i> Переменная сложность (vardiff), подстраивается под ваш хешрейт автоматически.</div>
+                    <div><i class="fa fa-shield"></i> TLS доступен на портах 5301-5303.</div>
+                </div>
+            </div>
+
+            <h4 class="push-up-15">Логин</h4>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-key"></i> Ваш <strong>адрес Kryptokrona</strong> (base58, начинается на <code>SEKRe</code>, 99 символов), можно с именем воркера: <code>АДРЕС+rig1</code> (или <code>АДРЕС.rig1</code>). Добавьте <code>solo:</code> перед адресом для соло-майнинга вместо общего пула (PROP) по умолчанию.</div>
+                </div>
+            </div>
+
+            <h4 class="push-up-15">Пароль</h4>
+            <div class="card padding-l-10 padding-r-10">
+                <div class="stats">
+                    <div><i class="fa fa-key"></i> Любой, например <code>x</code></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <h3>Команда для майнинга</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <p>С poolpayminer (1.1.32+):</p>
+                <pre style="white-space:pre-wrap;word-break:break-all;">poolpayminer -a kryptokrona -o xkrona.pool-pay.com:5300 -u ВАШ_XKR_АДРЕС+rig1 -p x</pre>
+                <p>С TLS: <code>poolpayminer -a kryptokrona --tls -o xkrona.pool-pay.com:5301 -u ВАШ_XKR_АДРЕС+rig1 -p x</code></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row push-up-15">
+        <div class="col-sm-12">
+            <h3 class="push-up-15">Об алгоритме (cn_turtle_lite_slow_hash_v2)</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <p><strong>cn_turtle_lite_slow_hash_v2</strong> — собственный настоящий хэш Kryptokrona семейства CryptoNight (математика variant 2, тот же шаг деления/sqrt, что и в CryptoNight v2 у Monero, но над гораздо меньшим scratchpad — 256 КБ вместо 2 МБ), вычисляемый над блоком-хэшинг-блобом пула (поля заголовка, merkle root, число транзакций — та же общая форма, что у других монет на cryptonote-nodejs-pool). Это действительно НЕ тот же алгоритм, что уже встроен в этот форк как <code>cn-pico</code>/<code>cryptonight-turtle</code>, несмотря на очень похожие названия и совпадающие на бумаге параметры памяти/итераций — проверено хэшированием одного и того же входа обоими способами на реальном коде узла, результаты разные. Сам протокол — это обычный Stratum cryptonote-nodejs-pool (запрос <code>login</code>, задание <code>job</code> с blob+target, отправка <code>submit</code> с nonce+result), а не классический Bitcoin Stratum. Обычный XMRig не знает именно этот алгоритм: используйте <strong>poolpayminer</strong> — он поддерживает его "из коробки".</p>
+            </div>
+
+            <h3 class="push-up-15">Программы</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <ul>
+                    <li><strong>poolpayminer (Linux x86-64):</strong> <a href="/downloads/">загрузки</a>,
+                        <a href="https://github.com/newsmoneymaker/poolpayminer" target="_blank" rel="noopener">исходный код</a>. Изменённый XMRig с поддержкой cn_turtle_lite_slow_hash_v2. <strong>Комиссия 1%</strong>, показывается при запуске.</li>
+                    <li><strong>Исходники пула:</strong> <a href="https://github.com/newsmoneymaker/kryptokrona-nodejs-pool" target="_blank" rel="noopener">kryptokrona-nodejs-pool</a>.</li>
+                    <li><strong>Кошелёк</strong> (чтобы получить адрес): официальный узел/кошелёк <a href="https://kryptokrona.org/" target="_blank" rel="noopener">Kryptokrona</a>.</li>
+                </ul>
+            </div>
+
+            <h3 class="push-up-15">Награды и выплаты</h3>
+            <div class="card padding-l-10 padding-r-10">
+                <ul>
+                    <li>Схема наград: <strong>PROP</strong> (пропорциональная, по умолчанию) или <strong>solo</strong> (добавьте <code>solo:</code> перед адресом).</li>
+                    <li>Награда за блок следует стандартной эмиссионной кривой CryptoNote — текущее значение см. на странице "Главная".</li>
+                    <li>После нахождения блока награда зачисляется на баланс после 70 подтверждений (реальный coinbase maturity Kryptokrona — 20 блоков, пул ждёт дольше для надёжности).</li>
+                    <li><strong>Выплаты сейчас только в тестовом режиме (dry-run).</strong> Это будет включено после того, как реальный блок созреет и первая выплата будет проверена целиком — это не ошибка, а честно незавершённый на старте шаг.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show the block that matches the site language (falls back to English)
+var gsLang = (typeof langCode !== 'undefined' && langCode === 'ru') ? 'ru' : 'en';
+$('.gs').hide().filter('[data-gs="' + gsLang + '"]').show();
+
+currentPage = {
+    destroy: function () {},
+    update: function () {
+        $('.gsHost').text(getPoolHost());
+    }
+};
+</script>

@@ -1,0 +1,8 @@
+node_modules/
+logs/
+config.json
+STOP_PAYMENTS
+*.log
+hasher/wrkzhash
+hasher/*.o
+hasher/wrkz-src/**/*.o
