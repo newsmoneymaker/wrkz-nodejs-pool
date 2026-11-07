@@ -1,3 +1,4 @@
+WALLET_BACKUP_*.txt
 node_modules/
 logs/
 config.json
