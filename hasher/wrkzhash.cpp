@@ -23,6 +23,7 @@
 #include "crypto/cn/CryptoNight.h"
 #include "crypto/cn/CryptoNight_monero.h"
 #include "crypto/cn/CryptoNight_x86.h"
+#include "base/crypto/keccak.h"
 
 // CnHash.cpp's own global, consulted only by the CN_GR_* branch (dead code for CN_UPX2 with SOFT_AES=true,
 // but the symbol must still resolve at link time) -- not linking CnHash.cpp itself (full CPU-dispatch table,
@@ -97,19 +98,31 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	if (argc == 3 && strcmp(argv[1], "--fast-hash") == 0) {
+		if (from_hex(argv[2], data)) { fprintf(stderr, "bad hex\n"); return 1; }
+		xmrig::keccak(data.data(), static_cast<int>(data.size()), hash, 32);
+		to_hex(hash, 32, hex);
+		puts(hex);
+		return 0;
+	}
+
 	char line[8192];
 	while (fgets(line, sizeof(line), stdin)) {
 		if (line[0] == 'Q') break;
-		if (line[0] != 'H') continue;
+		if (line[0] != 'H' && line[0] != 'F') continue;
 		char id[64], hexdata[8000];
-		if (sscanf(line, "H %63s %7999s", id, hexdata) != 2 || from_hex(hexdata, data)) {
-			printf("H %s err\n", (strlen(line) > 2) ? id : "0");
+		if (sscanf(line, "%*c %63s %7999s", id, hexdata) != 2 || from_hex(hexdata, data)) {
+			printf("%c %s err\n", line[0], (strlen(line) > 2) ? id : "0");
 			fflush(stdout);
 			continue;
 		}
-		wrkzHash(data, hash, ctx);
+		if (line[0] == 'H') {
+			wrkzHash(data, hash, ctx);
+		} else {
+			xmrig::keccak(data.data(), static_cast<int>(data.size()), hash, 32);
+		}
 		to_hex(hash, 32, hex);
-		printf("H %s %s\n", id, hex);
+		printf("%c %s %s\n", line[0], id, hex);
 		fflush(stdout);
 	}
 	return 0;
